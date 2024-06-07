@@ -16,6 +16,8 @@ import CustomHeader from './components/customHeader';
 import TabNavigator from './navigator/bottomtab';
 import EmailLink from './screens/EmailLink';
 import EnterPinScreen from './screens/EnterPinScreen';
+import ExportData from './screens/ExportData/ExportData';
+import ExportDataSent from './screens/ExportData/ExportDataSent';
 import LoginScreen from './screens/Login';
 import AccountScreen from './screens/addNewAcc';
 import createBudget from './screens/budget/createBudget';
@@ -32,7 +34,6 @@ import ThemeScreen from './screens/setting/ThemeScreen';
 import CurrencyScreen from './screens/setting/currency';
 import signUp from './screens/signup';
 import Transfer from './screens/transfer';
-
 
 export type RootStackParamList = {
   Onboarding: undefined;
@@ -58,6 +59,8 @@ export type RootStackParamList = {
   About: undefined;
   Help: undefined;
   Transaction: { email: string };
+  ExportData: undefined;
+  ExportDataSent: undefined;
 };
 GoogleSignin.configure();
 
@@ -225,7 +228,7 @@ const App: React.FC = () => {
               name="addAccount"
               component={AccountScreen}
               options={{
-                header: (props) => <CustomHeader title={'Login'} backgroundColor={'white'} {...props} />,
+                header: (props) => <CustomHeader title={'Add Account'} backgroundColor={'white'} {...props} />,
               }}
             />
             <Stack.Screen
@@ -274,8 +277,14 @@ const App: React.FC = () => {
             <Stack.Screen
               name="createBudget"
               component={createBudget}
-              options={{ headerTitle: 'Create Budget' }}
+              options={{
+                header: (props) => <CustomHeader title={'Expense'} backgroundColor={'#7F3DFF'} {...props} />,
+              }} 
             />
+            <Stack.Screen name="ExportData" component={ExportData}   options={{
+                header: (props) => <CustomHeader title={'Export Data'} backgroundColor={'white'} {...props} />,
+            }} />
+             <Stack.Screen name="ExportDataSent" component={ExportDataSent} options={{headerShown:false}} />
             <Stack.Screen name="Language" component={LanguageScreen} />
             <Stack.Screen name="Theme" component={ThemeScreen} />
             <Stack.Screen name="Security" component={SecurityScreen} />

@@ -1,12 +1,66 @@
+// import auth from '@react-native-firebase/auth';
+// import { useNavigation } from '@react-navigation/native';
+// import React, { useState } from 'react';
+// import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+// const SettingsScreen = () => {
+//   const navigation = useNavigation();
+//   const [showLogoutPrompt, setShowLogoutPrompt] = useState(false);
+
+//   const settingOptions = [
+//     { title: 'Currency', screen: 'CurrencyScreen' },
+//     { title: 'Language', screen: 'LanguageScreen' },
+//     { title: 'Theme', screen: 'ThemeScreen' },
+//     { title: 'Security', screen: 'SecurityScreen' },
+//     { title: 'Notification', screen: 'NotificationScreen' },
+//     { title: 'About', screen: 'AboutScreen' },
+//     { title: 'Help', screen: 'HelpScreen' },
+   
+//   ];
+
+//   const handleOptionPress = (screen: string, action?: () => void) => {
+//     if (action) {
+//       action();
+//     } else {
+//       navigation.navigate(screen);
+//     }
+//   };
+//   const handleLogout = () => {
+//     auth()
+//     .signOut()
+//     .then(() => console.log('User signed out!'))
+// }
+
+
+//   return (
+//     <View style={styles.container}>
+//       {settingOptions.map((option, index) => (
+//         <TouchableOpacity key={index} style={styles.option} onPress={() => handleOptionPress(option.screen, option.action)}>
+//           <View style={styles.optionTextContainer}>
+//             <Text style={styles.optionTitle}>{option.title}</Text>
+//           </View>
+//         </TouchableOpacity>
+//       ))}
+      
+//     </View>
+//   );
+// };
 import auth from '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+// Define the type for the setting options
+interface SettingOption {
+  title: string;
+  screen: string;
+  action?: () => void;
+}
+
 const SettingsScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<any>>();
   const [showLogoutPrompt, setShowLogoutPrompt] = useState(false);
 
-  const settingOptions = [
+  const settingOptions: SettingOption[] = [
     { title: 'Currency', screen: 'CurrencyScreen' },
     { title: 'Language', screen: 'LanguageScreen' },
     { title: 'Theme', screen: 'ThemeScreen' },
@@ -14,7 +68,7 @@ const SettingsScreen = () => {
     { title: 'Notification', screen: 'NotificationScreen' },
     { title: 'About', screen: 'AboutScreen' },
     { title: 'Help', screen: 'HelpScreen' },
-   
+    { title: 'Logout', screen: '', action: () => setShowLogoutPrompt(true) }
   ];
 
   const handleOptionPress = (screen: string, action?: () => void) => {
@@ -24,12 +78,12 @@ const SettingsScreen = () => {
       navigation.navigate(screen);
     }
   };
+
   const handleLogout = () => {
     auth()
-    .signOut()
-    .then(() => console.log('User signed out!'))
-}
-
+      .signOut()
+      .then(() => console.log('User signed out!'))
+  };
 
   return (
     <View style={styles.container}>
@@ -40,16 +94,25 @@ const SettingsScreen = () => {
           </View>
         </TouchableOpacity>
       ))}
-      
+      {showLogoutPrompt && (
+        <View style={styles.logoutPrompt}>
+          <Text>Are you sure you want to logout?</Text>
+          <TouchableOpacity onPress={handleLogout}>
+            <Text>Yes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowLogoutPrompt(false)}>
+            <Text>No</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 100,
     backgroundColor: 'white',
   },
   option: {

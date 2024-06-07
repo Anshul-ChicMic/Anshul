@@ -201,42 +201,94 @@ const Expense: React.FC<ScreenProps> = ({ route, navigation }) => {
     setShowBottomSheet(false);
   };
 
-  const handleContinue = async () => {
+//   const handleContinue = async () => {
     
+//   // Get the current user's email
+//   const currentUser = auth().currentUser;
+//   let email = currentUser!.email || ''; // Get the current user's email
+  
+//   // Convert the first letter of the email to capital
+//   email = email.charAt(0).toUpperCase() + email.slice(1);
+//   // Get the current user's email
+//  // Get the current user's email
+  
+//       // Construct the expense object
+//       const expenseData = {
+//         amount: balance,
+//         category: category,
+//         description: description,
+//         date: new Date().toLocaleDateString(),
+//         // Add any other fields you need
+//       };
+    
+//       try {
+//         // Update the user's document in the 'users' collection
+//         await firestore().collection('users').doc(email).set({
+//           expenses: firestore.FieldValue.arrayUnion(expenseData)
+//         }, { merge: true });
+    
+//         console.log('Expense data saved successfully');
+//         // Clear the input fields after saving
+//         setBalance('');
+//         setCategory('');
+//         setDescription('');
+//       } catch (error) {
+//         console.error('Error saving expense data: ', error);
+//       }
+ 
+//   };
+
+const handleTextChange = (text:string) => {
+  // Filter out non-numeric characters
+  const numericValue = text.replace(/[^0-9]/g, '');
+  setBalance(numericValue);
+};
+  
+const handleContinue = async () => {
   // Get the current user's email
   const currentUser = auth().currentUser;
-  let email = currentUser!.email || ''; // Get the current user's email
+  let email = currentUser!.email || '';
   
   // Convert the first letter of the email to capital
   email = email.charAt(0).toUpperCase() + email.slice(1);
-  // Get the current user's email
- // Get the current user's email
   
-      // Construct the expense object
-      const expenseData = {
-        amount: balance,
-        category: category,
-        description: description,
-        date: new Date().toLocaleDateString(),
-        // Add any other fields you need
-      };
-    
-      try {
-        // Update the user's document in the 'users' collection
-        await firestore().collection('users').doc(email).set({
-          expenses: firestore.FieldValue.arrayUnion(expenseData)
-        }, { merge: true });
-    
-        console.log('Expense data saved successfully');
-        // Clear the input fields after saving
-        setBalance('');
-        setCategory('');
-        setDescription('');
-      } catch (error) {
-        console.error('Error saving expense data: ', error);
-      }
- 
+  // Construct the expense object
+  const expenseData = {
+    amount: balance,
+    category: category,
+    description: description,
+    date: new Date().toLocaleDateString(),
+    // Add any other fields you need
   };
+
+  try {
+    // Generate a unique ID for the expense
+    const transactionRef = await firestore().collection('transactions').doc();
+    const transactionId = transactionRef.id;
+
+    // Store the expense data under the generated ID in the "transactions" collection
+    await transactionRef.set(expenseData);
+
+    // Store the expense data under the date in the "expenses" collection
+    const currentDate = new Date();
+    const dateString = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
+    await firestore().collection('expenses').doc(dateString).collection('transactions').doc(transactionId).set(expenseData);
+
+    // Update the user's document in the 'users' collection to keep track of the expenses
+    await firestore().collection('users').doc(email).update({
+      expenses: firestore.FieldValue.arrayUnion(transactionId)
+    });
+
+    console.log('Expense data saved successfully');
+    // Clear the input fields after saving
+    setBalance('');
+    setCategory('');
+    setDescription('');
+  } catch (error) {
+    console.error('Error saving expense data: ', error);
+  }
+};
+
 
   const handleRepeatTransactionChange = (value: boolean) => {
     setRepeatTransaction(value);
@@ -251,11 +303,12 @@ const Expense: React.FC<ScreenProps> = ({ route, navigation }) => {
           style={styles.input2}
           placeholder="$0.00"
           value={balance}
-          onChangeText={setBalance}
+          onChangeText={handleTextChange}
+     maxLength={7}
         />
       </View>
 
-      <View style={styles.infoContainer}>
+      <View style={[styles.infoContainer,{ zIndex: 1000 }]}>
         <DropDownPicker
           open={openCategory}
           value={category}

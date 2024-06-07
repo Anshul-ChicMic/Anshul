@@ -206,43 +206,54 @@ const Income: React.FC<ScreenProps> = ({route, navigation }) => {
     // Add document functionality here
     setShowBottomSheet(false);
   };
-
-  const handleContinue = async () => {
-    
+  const handleTextChange = (text:string) => {
+    // Filter out non-numeric characters
+    const numericValue = text.replace(/[^0-9]/g, '');
+    setBalance(numericValue);
+  };
+  const handleIncome = async () => {
     // Get the current user's email
     const currentUser = auth().currentUser;
-    let email = currentUser!.email || ''; // Get the current user's email
+    let email = currentUser!.email || '';
     
     // Convert the first letter of the email to capital
     email = email.charAt(0).toUpperCase() + email.slice(1);
-    // Get the current user's email
-   // Get the current user's email
-    
-        // Construct the expense object
-        const IncomeData = {
-          amount: balance,
-          category: category,
-          description: description,
-          date: new Date().toLocaleDateString(),
-          // Add any other fields you need
-        };
-      
-        try {
-          // Update the user's document in the 'users' collection
-          await firestore().collection('users').doc(email).set({
-           income: firestore.FieldValue.arrayUnion(IncomeData)
-          }, { merge: true });
-      
-          console.log('income data saved successfully');
-          // Clear the input fields after saving
-          setBalance('');
-          setCategory('');
-          setDescription('');
-        } catch (error) {
-          console.error('Error saving expense data: ', error);
-        }
-   
+  
+    // Construct the income object
+    const incomeData = {
+      amount: balance,
+      category: category,
+      description: description,
+      date: new Date().toISOString(), // Use ISO string for better querying
+      type: 'income',
     };
+  
+    try {
+      // Generate a unique ID for the income
+      const transactionRef = firestore().collection('transactions').doc();
+      const transactionId = transactionRef.id;
+  
+      // Store the income data under the date in the "incomes" collection
+      const currentDate = new Date();
+      const dateString = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+      await firestore().collection('incomes').doc(dateString).collection('transactions').doc(transactionId).set(incomeData);
+  
+      // Update the user's document in the 'users' collection to keep track of the incomes
+      const userDocRef = firestore().collection('users').doc(email);
+      await userDocRef.set({
+        transactions: firestore.FieldValue.arrayUnion(transactionId)
+      }, { merge: true });
+  
+      console.log('Income data saved successfully');
+      // Clear the input fields after saving
+      setBalance('');
+      setCategory('');
+      setDescription('');
+    } catch (error) {
+      console.error('Error saving income data: ', error);
+    }
+  };
+  
   
 
   return (
@@ -253,7 +264,7 @@ const Income: React.FC<ScreenProps> = ({route, navigation }) => {
           style={styles.input2}
           placeholder="$0.00"
           value={balance}
-          onChangeText={setBalance}
+          onChangeText={handleTextChange}
         />
       </View>
 
@@ -328,7 +339,7 @@ const Income: React.FC<ScreenProps> = ({route, navigation }) => {
             value={repeatTransaction}
           />
         </View>
-        <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
+        <TouchableOpacity style={styles.continueButton} onPress={handleIncome}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
       </View>

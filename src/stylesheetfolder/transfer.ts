@@ -13,6 +13,14 @@ export const styles = StyleSheet.create({
     marginTop: 150,
 
   },
+  input2: {
+    height: 56,
+    fontSize:50,
+    color: 'white',
+fontWeight:'bold',
+    paddingHorizontal: 15,
+    marginBottom: 30,
+  },
   balanceText: {
     fontSize: 20,
     fontWeight: 'bold',

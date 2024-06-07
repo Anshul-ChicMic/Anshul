@@ -13,7 +13,16 @@ export const styles = StyleSheet.create({
 
 
 
-  },repeatTransactionContainer: {
+  },
+  input2: {
+    height: 56,
+    fontSize:50,
+    color: 'white',
+fontWeight:'bold',
+    paddingHorizontal: 15,
+    marginBottom: 30,
+  },
+  repeatTransactionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between', // Align items on opposite ends horizontally
