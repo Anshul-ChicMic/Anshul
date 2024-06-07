@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "203683073806",
+    "project_id": "expensetracker-453cd",
+    "storage_bucket": "expensetracker-453cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203683073806:android:4248b9a77a3bc618d6115f",
+        "android_client_info": {
+          "package_name": "com.expensetrackerdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "203683073806-r4ofenaa9jpege5kno3hg7m8bou1ajfk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.expensetrackerdemo",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "203683073806-dd87s1qrlcsokng21mjco1pdbq8eo61c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiDHB6qyvw8R4mnAl-V5it7DxlIeZKI9g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "203683073806-dd87s1qrlcsokng21mjco1pdbq8eo61c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "203683073806-fi56p02cpmg9mr4942981mhdhq1tp3d8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.ExpenseTrackerdemo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
