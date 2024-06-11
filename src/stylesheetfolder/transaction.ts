@@ -108,20 +108,24 @@ marginLeft:20,
     color: 'white',
   },
   transactionsContainer: {
-    width: '100%',
+    width: 400,
     height: 400,
     paddingHorizontal: 16,
+    borderRadius: 24,
+  
   },
   transactionItem: {
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderColor: '#EAEAEA',
+    borderColor: '#FCFCFC',
     paddingVertical: 8,
+    paddingHorizontal:10,
   },
   category: {
     fontWeight: 'bold',
     color: 'black',
+    padding:10,
   },
   amountExpense: {
     color: 'red',
@@ -130,20 +134,35 @@ marginLeft:20,
     color: 'green',
   },
   description: {
-    color: 'white',
+    color: 'grey',
+    padding:10,
   },
   amount: {
     color: 'white',
+    left: 180,
+    bottom:20
   },
   recent: {
     fontWeight: 'bold',
     fontSize: 20,
   },
   transactionBox: {
-    width: '30%',
+    width: 450,
     height: 100,
-    backgroundColor: '#E0E0E0',
-    borderRadius: 10,
+    backgroundColor: '#FCFCFC',
+ borderTopLeftRadius:24,
     marginBottom: 10,
+  },
+  total: {
+    marginTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    paddingTop: 10,
+  },  date: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 5,
+    padding:20
   },
 });

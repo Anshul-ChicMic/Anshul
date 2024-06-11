@@ -210,8 +210,8 @@ import { NavigationProp, RouteProp } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { RootStackParamList } from '../App';
 import { setPin } from '../Redux/action';
+import { RootStackParamList } from '../components/src/App';
 import { styles } from '../stylesheetfolder/setPins';
 
 type SetPinsRouteProp = RouteProp<RootStackParamList, 'setPins'>;

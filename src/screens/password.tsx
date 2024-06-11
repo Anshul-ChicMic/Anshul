@@ -1,3 +1,4 @@
+import { firebase } from '@react-native-firebase/auth';
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from '../stylesheetfolder/password';
@@ -5,9 +6,17 @@ import { Props } from './onboardingScreen';
 const EmailScreen :React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
-  const handleContinue = () => {
- 
+  const handleContinue = (email:string) => {
+    firebase.auth().sendPasswordResetEmail(email)
+      .then(() => {
+        navigation.navigate('EmailLink')
+        console.log('Password reset email sent successfully.');
+      })
+      .catch((error) => {
+        console.error('Error sending password reset email:', error);
+      });
   };
+  
   const validateEmail = (email: string) => {
     setEmail(email);
     if (!email) {
@@ -35,7 +44,7 @@ Enter your email and we’ll send you a link to reset your password.</Text>
         autoCapitalize="none"
       />
       {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
-      <TouchableOpacity style={styles.continueButton} onPress={() => navigation.navigate('EmailLink')}>
+      <TouchableOpacity style={styles.continueButton} onPress={()=>handleContinue(email) }>
         <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>
     </View>

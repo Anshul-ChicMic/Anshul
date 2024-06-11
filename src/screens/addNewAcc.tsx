@@ -14,7 +14,7 @@ const AccountScreen :React.FC<Props> = ({ navigation }) => {
   ]);
 
   const handleContinue = () => {
-    // Add your logic for handling continue here
+    navigation.navigate('adNewWallet')
   };
 
   return (

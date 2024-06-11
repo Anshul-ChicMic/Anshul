@@ -11,21 +11,24 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import ExportData from '../src/screens/exportData/exportData.tsx';
 import { persistor, store } from './Redux/store';
 import CustomHeader from './components/customHeader';
 import TabNavigator from './navigator/bottomtab';
 import EmailLink from './screens/EmailLink';
 import EnterPinScreen from './screens/EnterPinScreen';
-import ExportData from './screens/ExportData/ExportData';
-import ExportDataSent from './screens/ExportData/ExportDataSent';
 import LoginScreen from './screens/Login';
+import TransactionDetail from './screens/TransactionDetail.tsx';
 import AccountScreen from './screens/addNewAcc';
+import addNewWallet from './screens/addNewWallet.tsx';
 import createBudget from './screens/budget/createBudget';
 import Next from './screens/continue';
 import Expense from './screens/expense';
-import Income from './screens/income';
+import ExportDataSent from './screens/exportData/exportDataSent';
+import Income from './screens/income.tsx';
 import OnboardingScreen from './screens/onboardingscreen';
 import EmailScreen from './screens/password';
+import set from './screens/set.tsx';
 import SetPinScreen from './screens/setPins';
 import LanguageScreen from './screens/setting/LanguageScreen';
 import SecurityScreen from './screens/setting/SecurityScreen';
@@ -35,6 +38,14 @@ import CurrencyScreen from './screens/setting/currency';
 import signUp from './screens/signup';
 import Transfer from './screens/transfer';
 
+interface Transaction {
+  id: string;
+  amount: string;
+  category: string;
+  description: string;
+  date?: Date;
+  type?: string; // Make the 'type' property optional
+}
 export type RootStackParamList = {
   Onboarding: undefined;
   signUp: undefined;
@@ -58,122 +69,21 @@ export type RootStackParamList = {
   Notification: undefined;
   About: undefined;
   Help: undefined;
-  Transaction: { email: string };
+  Transaction: {transaction:Transaction};
   ExportData: undefined;
   ExportDataSent: undefined;
+  adNewWallet: undefined;
+  set: undefined;
+  TransactionDetail:{transaction:Transaction}
 };
-GoogleSignin.configure();
+
+GoogleSignin.configure({
+  webClientId: '203683073806-dd87s1qrlcsokng21mjco1pdbq8eo61c.apps.googleusercontent.com',
+});
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-// const App: React.FC = () => {
-  
-//   return (
-//     <Provider store={store }>
-//      <PersistGate loading={null} persistor={persistor}> 
-//     <NavigationContainer>
-//       <Stack.Navigator
-//         initialRouteName="Onboarding"
-//         screenOptions={{
-//            //header: (props) => <CustomHeader {...props} />,
-//           headerBackTitleVisible: false,
-//         }}>
-//         <Stack.Screen
-//           name="Home"
-//           component={TabNavigator}
-//           options={{ headerShown: false }}
-//         />
-//         <Stack.Screen
-//           name="Onboarding"
-//           component={OnboardingScreen}
-//           options={{ headerShown: false }}
-//         />
-//         <Stack.Screen
-//           name="signUp"
-//           component={signUp}
-//           options={{
-//             headerStyle: { backgroundColor: '#f8f8f8' },
-//             headerTitleStyle: { fontWeight: 'bold' },
-//           }}
-//         />
-//         <Stack.Screen
-//           name="Login"
-//           component={LoginScreen}
-//           options={{
-//             headerStyle: { backgroundColor: 'blue' }, // Change header color here
-//             headerTitleStyle: { fontWeight: 'bold' },
-//           }}
-//         />
-//         {/* Define options for other screens similarly */}
-//         <Stack.Screen
-//           name="password"
-//           component={EmailScreen}
-//           options={{
-//            // Change header color here
-//             headerTitleStyle: { fontWeight: 'bold' },
-//           }}
-//         />
-//         <Stack.Screen
-//           name="EmailLink"
-//           component={EmailLink}
-//           options={{
-//          // Change header color here
-//             headerTitleStyle: { fontWeight: 'bold' },
-//           }}
-//         />
-//         {/* Include other screens */}
-//         <Stack.Screen
-//           name="addAccount"
-//           component={AccountScreen}
-//           options={{
-//             headerStyle: { backgroundColor: '#7F3DFF' }, // Change header color here
-//             headerTitleStyle: { fontWeight: 'bold' },
-//           }}
-//         />
-//         <Stack.Screen
-//           name="next"
-//           component={next}
-//           options={{
-//             headerStyle: { backgroundColor: 'yellow' }, // Change header color here
-//             headerTitleStyle: { fontWeight: 'bold' },
-//           }}
-//             />
-//             <Stack.Screen
-//           name="EnterPinScreen"
-//           component={EnterPinScreen}
-//               options={{
-//                 headerShown: false}}
-//         />
-//         <Stack.Screen
-//           name="setPins"
-//           component={SetPinScreen}
-          
-//             />
-//               <Stack.Screen
-//           name="Setting"
-//           component={Setting}
-//             />
-//              <Stack.Screen
-//           name="Currency"
-//           component={CurrencyScreen}
-//             />
-//             <Stack.Screen name="Expense" component={Expense} options={{ headerStyle: { backgroundColor: '#FD3C4A' },  headerTitleStyle: { fontWeight: 'bold',color:'white' }}} />
-//             <Stack.Screen name="income" component={Income} />
-//             <Stack.Screen name="Transfer" component={Transfer} />
 
-//               <Stack.Screen name="createBudget" component={createBudget} options={{headerTitle:'create Budget' }}/>
-//             <Stack.Screen name="Language" component={LanguageScreen} />
-//         <Stack.Screen name="Theme" component={ThemeScreen} />
-//         <Stack.Screen name="Security" component={SecurityScreen} />
-        
-//        </Stack.Navigator>
-//         </NavigationContainer>
-//     </PersistGate> 
-//     </Provider>
-//   );
-// };
-
-// export default App;
 const App: React.FC = () => {
   return (
     <Provider store={store}>
@@ -228,8 +138,31 @@ const App: React.FC = () => {
               name="addAccount"
               component={AccountScreen}
               options={{
-                header: (props) => <CustomHeader title={'Add Account'} backgroundColor={'white'} {...props} />,
+                header: (props) => <CustomHeader title={'Add Account'} backgroundColor={'#7F3DFF'} {...props} />,
               }}
+            />
+             <Stack.Screen
+              name="adNewWallet"
+              component={addNewWallet}
+              options={{
+                header: (props) => <CustomHeader title={'Add New Wallet'} backgroundColor={'#7F3DFF'} {...props} />,
+              }}
+            />
+             <Stack.Screen
+              name="TransactionDetail"
+              component={TransactionDetail}
+              options={{
+                header: (props) => <CustomHeader title={'Transaction Details'}  {...props} />,
+              }}
+            />
+            <Stack.Screen name="income" component={Income} options={{
+                header: (props) => <CustomHeader title={'Expense'} backgroundColor={'#00A86B'} {...props} />,
+              }} />
+              <Stack.Screen
+              name="set"
+              component={set}
+              options={{
+                headerShown: false  }}
             />
             <Stack.Screen
               name="next"
@@ -270,9 +203,7 @@ const App: React.FC = () => {
                 header: (props) => <CustomHeader title={'Expense'} backgroundColor={'#FD3C4A'} {...props} />,
               }}
             />
-            <Stack.Screen name="income" component={Income} options={{
-                header: (props) => <CustomHeader title={'Expense'} backgroundColor={'#00A86B'} {...props} />,
-              }} />
+            
             <Stack.Screen name="Transfer" component={Transfer}  options={{ header: (props) => <CustomHeader title={'Transfer'} backgroundColor={'#0077FF'} {...props} />,}}/>
             <Stack.Screen
               name="createBudget"
@@ -296,5 +227,4 @@ const App: React.FC = () => {
 };
 
 export default App;
-
 
