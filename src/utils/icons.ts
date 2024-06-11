@@ -1,12 +1,14 @@
 import { RFValue } from 'react-native-responsive-fontsize';
+import piechart from '../svg/Budget.svg';
 import ellipse from '../svg/Ellipse25.svg';
 import expense from '../svg/Expense.svg';
+import home from '../svg/Home.svg';
 import income from '../svg/Income.svg';
+import user from '../svg/Profile.svg';
 import transfer from '../svg/Transaction(1).svg';
-import home from '../svg/home.svg';
-import piechart from '../svg/pie-chart.svg';
-import transaction from '../svg/transaction.svg';
-import user from '../svg/user.svg';
+import transaction from '../svg/Transactionicon.svg';
+import close from '../svg/close.svg';
+import trash from '../svg/trash.svg';
 const iconStyle = (
   { width = 0,
     height = 0,
@@ -29,4 +31,6 @@ export const ICONS = {
  income: (params: iconProps) =>income({ ...iconStyle({ ...params }) }),
   expense: (params: iconProps) =>expense({ ...iconStyle({ ...params }) }),
   transfer: (params: iconProps) => transfer({ ...iconStyle({ ...params }) }),
+  close: (params: iconProps) => close({ ...iconStyle({ ...params }) }),
+  trash: (params: iconProps) => trash({ ...iconStyle({ ...params }) }),
 };

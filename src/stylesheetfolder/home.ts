@@ -287,10 +287,11 @@ export const styles = StyleSheet.create({
     width: '100%',
     height:400,
     paddingHorizontal: 16,
+    
   },
   transactionItem: {
     flexDirection: 'row',
-    // justifyContent: 'space-between',
+ 
     alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: '#EAEAEA',

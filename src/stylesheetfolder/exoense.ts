@@ -95,7 +95,6 @@ paddingHorizontal:10,
   },
   input: {
     height: 56,
-    width:389,
     borderColor: '#CCCCCC',
     borderWidth: 1,
     borderRadius: 16,

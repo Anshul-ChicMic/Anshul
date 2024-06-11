@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
+import expenseReducer from './expenseReducer';
+import incomeReducer from './incomeReducers';
 import pinReducer from './pinReducer';
-
-const rootReducer = combineReducers({
+  const rootReducer = combineReducers({
   pin: pinReducer,
-  // Add other reducers here
+  expense: expenseReducer,
+  income:incomeReducer,// Add other reducers here
 });
 
 export default rootReducer;
